@@ -1,0 +1,39 @@
+<nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+          <div class="flex-shrink-0 flex items-center cursor-pointer" routerLink="/">
+            <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">JobPortal</span>
+          </div>
+          <div class="hidden sm:ml-6 sm:flex sm:space-x-8 items-center">
+            <a routerLink="/" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Accueil</a>
+            <a routerLink="/all-jobs" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Parcourir les Emplois</a>
+            
+            <ng-container *ngIf="isLoggedIn; else loggedOut">
+              <!-- Recruiter-specific links -->
+              <ng-container *ngIf="userRole === 'recruiter'">
+                <a routerLink="/add-job" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Publier un Emploi</a>
+                <a routerLink="/my-jobs" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Mes Emplois</a>
+              </ng-container>
+              
+              <!-- Candidate-specific links -->
+              <ng-container *ngIf="userRole === 'candidate'">
+                <a routerLink="/my-jobs" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Mes Candidatures</a>
+              </ng-container>
+              
+              <!-- Admin-specific links -->
+              <ng-container *ngIf="userRole === 'admin'">
+                <a routerLink="/admin" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Tableau de Bord</a>
+              </ng-container>
+              
+              <span class="text-sm text-gray-500 px-2">{{ userName }}</span>
+              <button (click)="logout()" class="ml-4 bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm font-medium transition-all shadow-sm hover:shadow">Déconnexion</button>
+            </ng-container>
+            
+            <ng-template #loggedOut>
+              <a routerLink="/login" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Se Connecter</a>
+              <a routerLink="/register" class="ml-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">S'inscrire</a>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </nav>

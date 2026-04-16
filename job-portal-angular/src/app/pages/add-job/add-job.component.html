@@ -1,0 +1,109 @@
+<div class="min-h-screen bg-gray-50 pt-20 pb-12">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Not a recruiter -->
+        <div *ngIf="userRole !== 'recruiter'" class="text-center py-20">
+          <p class="text-xl text-gray-400 mb-4">Seuls les recruteurs peuvent publier des emplois</p>
+          <button (click)="router.navigate(['/'])" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl transition-all shadow-md">Retour à l'accueil</button>
+        </div>
+
+        <!-- Job posting form -->
+        <div *ngIf="userRole === 'recruiter'">
+          <div class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold text-gray-900">
+              Publier un <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Nouvel Emploi</span>
+            </h1>
+            <p class="mt-3 text-lg text-gray-500">Remplissez les détails pour créer une nouvelle offre d'emploi</p>
+          </div>
+
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            <form (ngSubmit)="onSubmit()" #jobForm="ngForm">
+              <div class="space-y-6">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Poste *</label>
+                    <input type="text" name="position" [(ngModel)]="job.position" required
+                      class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="ex. Ingénieur Logiciel Senior">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Entreprise *</label>
+                    <input type="text" name="company" [(ngModel)]="job.company" required
+                      class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 text-sm" placeholder="ex. Google Inc.">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Type d'Emploi</label>
+                    <select name="jobType" [(ngModel)]="job.jobType"
+                      class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 text-sm bg-white">
+                      <option value="FULL_TIME">Temps Plein</option>
+                      <option value="PART_TIME">Temps Partiel</option>
+                      <option value="CONTRACT">Contrat</option>
+                      <option value="INTERNSHIP">Stage</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Localisation</label>
+                    <input type="text" name="location" [(ngModel)]="job.location"
+                      class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 text-sm" placeholder="ex. Paris / À distance">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Salaire</label>
+                    <input type="text" name="salary" [(ngModel)]="job.salary"
+                      class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 text-sm" placeholder="ex. 40 000 € - 50 000 €">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date limite</label>
+                    <input type="text" name="deadline" [(ngModel)]="job.deadline"
+                      class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 text-sm" placeholder="ex. 2026-06-30">
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+                  <textarea name="description" [(ngModel)]="job.description" required rows="4"
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 text-sm resize-none" placeholder="Décrivez le rôle, les responsabilités..."></textarea>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Exigences</label>
+                  <textarea name="requirements" [(ngModel)]="job.requirements" rows="3"
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 text-sm resize-none" placeholder="Compétences requises, expérience..."></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Compétences</label>
+                    <input type="text" name="skills" [(ngModel)]="job.skills"
+                      class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 text-sm" placeholder="ex. Java, Spring Boot, React">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Contact</label>
+                    <input type="text" name="contact" [(ngModel)]="job.contact"
+                      class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 text-sm" placeholder="ex. rh@entreprise.com">
+                  </div>
+                </div>
+
+                <!-- Messages -->
+                <div *ngIf="successMessage" class="p-4 bg-green-50 text-green-700 rounded-xl border border-green-200 text-sm">
+                  {{ successMessage }}
+                </div>
+                <div *ngIf="errorMessage" class="p-4 bg-red-50 text-red-500 rounded-xl border border-red-200 text-sm">
+                  {{ errorMessage }}
+                </div>
+
+                <button type="submit" [disabled]="!jobForm.form.valid || loading"
+                  class="w-full py-3 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-xl hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                  {{ loading ? 'Publication...' : 'Publier l\'emploi' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
